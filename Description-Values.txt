@@ -42,6 +42,9 @@ returning what has been parsed until that point.
 As previously hinted at, the parser skips any complete (!) blank lines (^$),
 considering only the inverse (^.+$).
 
+Because std::map is used to store menu entries, and because it orders its keys in alphabetical order,
+the menu options are themselves ordered in alphabetical order according to the "selection".
+
 Here are a few validly formatted examples:
 
 ======= housing appliances.txt =========

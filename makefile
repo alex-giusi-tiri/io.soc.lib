@@ -1,0 +1,87 @@
+COMPILER = g++
+WINCOMPILER_X64 = x86_64-w64-mingw32-g++
+WINCOMPILER_X86 = i686-w64-mingw32-g++
+#CCOMPILER = gcc
+SYSLIB = /usr/lib
+#IN = supporters.obj
+#IN = /usr/local/lib/libboost_system.a
+#IN = $(SYSLIB)/libboost_system.so
+#IN = $(SYSLIB)/libboost_system.a $(SYSLIB)/libpthread.a
+IN = $(SYSLIB)/libboost_system.a
+#IN_WIN_X64 = /usr/x86_64-w64-mingw32/lib/libwinpthread.a
+#IN_WIN_X64 = /root/.wine/drive_c/boost/1_60_0/lib64-msvc-14.0/boost_system-vc140-mt-1_60.lib /root/.wine/drive_c/boost/1_60_0/lib64-msvc-14.0/boost_system-vc140-mt-gd-1_60.dll
+#IN_WIN_X64 = /root/.wine/drive_c/boost/1_60_0/lib64-msvc-14.0/libboost_system-vc140-mt-s-1_60.lib
+#IN_WIN_X64 = /opt/boost/1.60/stage/lib/libboost_system-s.a
+IN_WIN_X64 = libboost/libboost_system.a
+#IN_WIN_X64 = 
+#IN_WIN_X86 = /opt/boost/1.60/stage/lib/libboost_system-s.a
+IN_WIN_X86 = libboost/libboost_system.a
+#OUT = main.act
+
+# COMPILER_FLAGS = -g -ggdb -pedantic -fpermissive -W -Wall -Wmain -Wcomment -Wconversion -Wunused-parameter -Wparentheses -std=c++14 -fopenmp -l pthread -l dl
+#COMPILER_FLAGS = -g -ggdb -static-libgcc -static -pedantic -fpermissive -W -Wall -Wmain -Wcomment -Wconversion -Wunused-parameter -Wparentheses -std=c++14 -l dl -l pthread -l boost_system
+#COMPILER_FLAGS = -g -ggdb -static-libgcc -pedantic -fpermissive -W -Wall -Wmain -Wcomment -Wconversion -Wunused-parameter -Wparentheses -std=c++14
+#COMPILER_FLAGS = -g -ggdb -static-libgcc -static -pedantic -fpermissive -W -Wall -Wmain -Wcomment -Wconversion -Wunused-parameter -Wparentheses -std=c++14 -L /usr/lib -l dl -l pthread -l boost_system
+#COMPILER_FLAGS = -static-libstdc++ -static-libgcc -static -g -ggdb -pedantic -fpermissive -W -Wall -Wmain -Wcomment -Wconversion -Wunused-parameter -Wparentheses -std=c++14 -l pthread -l boost_system
+#COMPILER_FLAGS = -static -g -ggdb -pedantic -fpermissive -W -Wall -Wmain -Wcomment -Wconversion -Wunused-parameter -Wparentheses -std=c++14 -pthread -l boost_system
+# -Wall -Wextra -Wmain -Wshadow -Werror -pedantic-errors -ansi
+COMPILER_FLAGS = -static-libstdc++ -static-libgcc -static -g -ggdb -pedantic -fpermissive -W -Wall -Wextra -Wshadow -Wcomment -Wconversion -Wunused-parameter -Wparentheses -std=c++14 -pthread
+# -l boost_system
+# -I /usr/include
+# -L /usr/lib/gcc/x86_64-w64-mingw32/5.3.0/
+# -I /usr/lib/gcc/x86_64-w64-mingw32/5.3.0/
+# -mwindows
+
+all : gpio-x86_64.act gpio-i686.act gpio-x86_64.exe gpio-i686.exe
+
+linux : linux-x86_64 linux-i686
+windows : windows-x86_64 windows-i686
+
+x86_64 : linux-x86_64 windows-x86_64
+i686 : linux-i686 windows-i686
+
+linux-x86_64 : gpio-x86_64.act
+linux-i686 : gpio-i686.act
+
+windows-x86_64 : gpio-x86_64.exe
+windows-i686 : gpio-i686.exe
+
+gpio-x86_64.act :
+	if ! test -f gpio-x86_64.act;\
+	then\
+		#$(COMPILER) $(COMPILER_FLAGS) -o supporters.obj -c supporters.c++;\
+		$(COMPILER) $(COMPILER_FLAGS) -o gpio-x86_64.act.obj -c main.c++;\
+		\
+		$(COMPILER) $(COMPILER_FLAGS) -m64 -o gpio-x86_64.act gpio-x86_64.act.obj $(IN);\
+	fi
+gpio-i686.act :
+	if ! test -f gpio-i686.act;\
+	then\
+		#$(COMPILER) $(COMPILER_FLAGS) -o supporters.obj -c supporters.c++;\
+		$(COMPILER) $(COMPILER_FLAGS) -o gpio-i686.act.obj -c main.c++;\
+		\
+		$(COMPILER) $(COMPILER_FLAGS) -m32 -o gpio-i686.act gpio-i686.act.obj $(IN);\
+	fi
+gpio-x86_64.exe :
+	if ! test -f gpio-x86_64.exe;\
+	then\
+		#$(COMPILER) $(COMPILER_FLAGS) -o supporters.obj -c supporters.c++;\
+		$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/x86_64-w64-mingw32/5.3.0 -o gpio-x86_64.exe.obj -c main.c++;\
+		\
+		$(WINCOMPILER_X64) $(COMPILER_FLAGS) -o gpio-x86_64.exe gpio-x86_64.exe.obj $(IN_WIN_X64) -l wsock32;\
+		# -l ws2_32\
+	#	$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/x86_64-w64-mingw32/5.3.0 -L /opt/boost/1.60/stage/lib -o gpio-x86_64.exe main.c++ $(IN_WIN_X64);\
+	fi
+gpio-i686.exe :
+	if ! test -f gpio-i686.exe;\
+	then\
+		#$(COMPILER) $(COMPILER_FLAGS) -o supporters.obj -c supporters.c++;\
+		$(WINCOMPILER_X86) $(COMPILER_FLAGS) -I /usr/lib/gcc/i686-w64-mingw32/5.3.0 -o gpio-i686.exe.obj -c main.c++;\
+		\
+		$(WINCOMPILER_X86) $(COMPILER_FLAGS) -o gpio-i686.exe gpio-i686.exe.obj $(IN_WIN_X86) -l wsock32;\
+		# -l ws2_32\
+	#	$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/i686-w64-mingw32/5.3.0 -o gpio-i686.exe main.c++ $(IN_WIN_X32);\
+	fi
+clean:
+	rm --force *.act *.exe *.obj
+

@@ -1,0 +1,193 @@
+The program needs a text file which should follow some strict formatting.
+This inputted file effectively maps the GPIO values that should be outputted to a menu option.
+The displayed menu is thus created based on this file.
+
+See the examples below.
+
+
+The input file must be formatted as follows:
+
+The file consists of individual entries,
+each consisting of 3 lines.
+Each individual line is a component of that entry.
+
+Each entry features these components (defined in "./menu/item.h++"), parsed in this order:
+
+value
+selection
+description
+
+value:
+	This is the GPIO outputted value.
+	It should be a binary value.
+	The bits are ordered in -endianness: most-significant ... least-significant (2^N ... 2^0). So, Pin N on the board corresponds to Bit N in this value.
+	Extra missing bits to the left are assumed 0.
+	The number of bits should not exceed 8. *1
+selection
+	This is text which allows this option to be selected through the runtime menu.
+	It is used exactly as it appears on the line of the file. *2
+description
+	This is a description which allows extra details to be displayed about the option.
+
+
+
+The parser (./menu/parse.*++) expects the first non-blank (!) line of the file
+to be the first component of the first entry.
+The subsequently found non-blank lines are based on on this assumption.
+
+If there are an 2 or 1 non-blank lines which do not complete a entry,
+parsing is stopped there, and the rest of the lines are ignored,
+returning what has been parsed until that point.
+
+As previously hinted at, the parser skips any complete (!) blank lines (^$),
+considering only the inverse (^.+$).
+
+Here are a few validly formatted examples:
+
+======= housing appliances.txt =========
+0
+0
+All: Off
+
+1
+LL1
+Living Room Lights: On
+
+101
+F0
+Fridge: Off
+
+100
+F1
+Fridge: Open
+
+010
+T0
+Toaster: Off
+
+111
+T1
+Toaster: On
+========================================
+
+
+========= personal robot.txt ===========
+00001000
+M
+Mute
+
+00001001
+S
+Sing
+
+11000011
+Z
+Sleep
+
+01000100
+R
+Run
+
+00111100
+T
+Think
+
+10101010
+P
+Panic
+
+11110000
+J
+Tell a Joke
+========================================
+
+
+=== unconventionally formatted.txt =====
+
+111
+
+E
+
+Exit
+
+
+
+0011
+
+T
+
+Stop
+
+
+
+101
+
+S
+
+Start
+
+
+
+010
+
+H
+
+Whistle
+
+========================================
+
+
+In general, the format is:
+=============== input.txt ==============
+Repetition (>= 0) of Menu Entry as
+{
+	[blank line(s)]
+	
+	(Binary) Value (1 line; cannot be blank; cannot be white space)
+	
+	[blank line(s)]
+	
+	Option/Selection (1 line; cannot be blank; can be white space)
+	
+	[blank line(s)]
+	
+	Description (1 line; cannot be blank; can be white space)
+	
+	[blank line(s)]
+}
+========================================
+...or otherwise (by regex extension *3):
+=============== input.txt ==============
+((^$)*
+^[01]+$
+(^$)*
+^.+$
+(^$)*
+^.+$
+(^$)*)*
+========================================
+
+
+*1 In the current implementation.
+*2 For example, in this input file, the operator needs to enter ' Q' as the option, to quit, because Q is entered as ' Q' in the file:
+============ precision.txt =============
+
+...
+
+0110
+ Q
+Quit
+
+...
+
+========================================
+*3 Hypothetical extensions mentioned only here, not actual, working, implementations.
+
+
+The program has only been tested with ASCII text files only.
+
+
+
+This document describes the way that the current implmenetation is expected to work.
+Other ways of usage were not tested, and unexpected behaviour may occur if they are to be executed.
+

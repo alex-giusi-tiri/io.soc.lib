@@ -42,6 +42,10 @@ returning what has been parsed until that point.
 As previously hinted at, the parser skips any complete (!) blank lines (^$),
 considering only the inverse (^.+$).
 
+There is a requirement for proper functionning:
+- Each binary value must be unique amongst themselves, per file.
+- Each selectable menu option must be unique amongst themselves, per file.
+
 Because std::map is used to store menu entries, and because it orders its keys in alphabetical order,
 the menu options are themselves ordered in alphabetical order according to the "selection".
 
@@ -191,6 +195,6 @@ The program has only been tested with ASCII text files only.
 
 
 
-This document describes the way that the current implmenetation is expected to work.
+This document describes the way that the current implementation is expected to work.
 Other ways of usage were not tested, and unexpected behaviour may occur if they are to be executed.
 

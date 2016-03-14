@@ -20,7 +20,8 @@
 //#define DIGITS 8
 
 //int main (int argc, char * argv [])
-signed int main (const unsigned long long int argc, const char * argv [])
+//signed int main (const unsigned long long int argc, const char * argv [])
+signed int main (const unsigned int argc, const char * argv [])
 {
 /*
 	for (unsigned int i = 0; i < argc; ++ i)

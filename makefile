@@ -12,10 +12,16 @@ IN = $(SYSLIB)/libboost_system.a
 #IN_WIN_X64 = /root/.wine/drive_c/boost/1_60_0/lib64-msvc-14.0/boost_system-vc140-mt-1_60.lib /root/.wine/drive_c/boost/1_60_0/lib64-msvc-14.0/boost_system-vc140-mt-gd-1_60.dll
 #IN_WIN_X64 = /root/.wine/drive_c/boost/1_60_0/lib64-msvc-14.0/libboost_system-vc140-mt-s-1_60.lib
 #IN_WIN_X64 = /opt/boost/1.60/stage/lib/libboost_system-s.a
+
 IN_WIN_X64 = libboost/libboost_system.a
+#IN_WIN_X64 = /opt/boost/1.60/stage/lib/libboost_system-mgw53-mt-s-1_60.a
+
 #IN_WIN_X64 = 
 #IN_WIN_X86 = /opt/boost/1.60/stage/lib/libboost_system-s.a
-IN_WIN_X86 = libboost/libboost_system.a
+
+IN_WIN_X86 = lib32boost/libboost_system.a
+#IN_WIN_X86 = /opt/boost/1.60/stage/lib/libboost_system-mgw53-mt-s-1_60.a
+
 #OUT = main.act
 
 # COMPILER_FLAGS = -g -ggdb -pedantic -fpermissive -W -Wall -Wmain -Wcomment -Wconversion -Wunused-parameter -Wparentheses -std=c++14 -fopenmp -l pthread -l dl
@@ -68,7 +74,7 @@ gpio-x86_64.exe :
 		#$(COMPILER) $(COMPILER_FLAGS) -o supporters.obj -c supporters.c++;\
 		$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/x86_64-w64-mingw32/5.3.0 -o gpio-x86_64.exe.obj -c main.c++;\
 		\
-		$(WINCOMPILER_X64) $(COMPILER_FLAGS) -o gpio-x86_64.exe gpio-x86_64.exe.obj $(IN_WIN_X64) -l wsock32;\
+		$(WINCOMPILER_X64) $(COMPILER_FLAGS) -m64 -o gpio-x86_64.exe gpio-x86_64.exe.obj $(IN_WIN_X64) -lwsock32;\
 		# -l ws2_32\
 	#	$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/x86_64-w64-mingw32/5.3.0 -L /opt/boost/1.60/stage/lib -o gpio-x86_64.exe main.c++ $(IN_WIN_X64);\
 	fi
@@ -78,7 +84,7 @@ gpio-i686.exe :
 		#$(COMPILER) $(COMPILER_FLAGS) -o supporters.obj -c supporters.c++;\
 		$(WINCOMPILER_X86) $(COMPILER_FLAGS) -I /usr/lib/gcc/i686-w64-mingw32/5.3.0 -o gpio-i686.exe.obj -c main.c++;\
 		\
-		$(WINCOMPILER_X86) $(COMPILER_FLAGS) -o gpio-i686.exe gpio-i686.exe.obj $(IN_WIN_X86) -l wsock32;\
+		$(WINCOMPILER_X86) $(COMPILER_FLAGS) -m32 -o gpio-i686.exe gpio-i686.exe.obj $(IN_WIN_X86) -lwsock32;\
 		# -l ws2_32\
 	#	$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/i686-w64-mingw32/5.3.0 -o gpio-i686.exe main.c++ $(IN_WIN_X32);\
 	fi

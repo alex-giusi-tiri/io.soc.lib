@@ -1,0 +1,9 @@
+This program controls the GPIO pins of a serially attached module.
+It was written for and was tested with the Numato 8- and 16-Channel USB GPIO Modules.
+
+The program currently is written in console mode.
+A menu should allow the operator to select custom-defined options (and values) as described in 'values.txt'.
+
+Numato: http://numato.com
+Numato 8 Channel USB GPIO Module: http://numato.com/8-channel-usb-gpio-module-with-analog-inputs/
+Numato 16 Channel USB GPIO Module: http://numato.com/16-channel-usb-gpio-module-with-analog-inputs/

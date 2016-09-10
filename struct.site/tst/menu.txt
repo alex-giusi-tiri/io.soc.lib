@@ -1,0 +1,19 @@
+Independent Brakes
+
+ 0.  0 PSI (Released)
+15. 15 PSI (Low)
+30. 30 PSI (Medium)
+45. 45 PSI (Full)
+
+
+Train Brakes
+
+90. 90 PSI (Released)
+82. 82 PSI (Min)
+75. 75 PSI (Light)
+70. 70 PSI (Medium)
+62. 62 PSI (Full)
+
+
+E. Exit
+

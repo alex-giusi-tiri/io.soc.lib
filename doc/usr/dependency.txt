@@ -1,0 +1,7 @@
+Numato GPIO Module
+
+Packages:
+	boost
+	boost-libs
+
+libboost/ contains required libraries for Windows building only.

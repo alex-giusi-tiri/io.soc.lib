@@ -1,6 +1,6 @@
 COMPILER = g++
 WINCOMPILER_X64 = x86_64-w64-mingw32-g++
-WINCOMPILER_X86 = i686-w64-mingw32-g++
+WINCOMPILER_X86 = x86-w64-mingw32-g++
 #CCOMPILER = gcc
 SYSLIB = /usr/lib
 #IN = supporters.obj
@@ -38,58 +38,58 @@ COMPILER_FLAGS = -static-libstdc++ -static-libgcc -static -g -ggdb -pedantic -fp
 # -I /usr/lib/gcc/x86_64-w64-mingw32/5.3.0/
 # -mwindows
 
-all : gpio-x86_64.act gpio-i686.act gpio-x86_64.exe gpio-i686.exe
+all : gpio-x64.act gpio-x86.act gpio-x64.exe gpio-x86.exe
 
-linux : linux-x86_64 linux-i686
-windows : windows-x86_64 windows-i686
+linux : linux-x64 linux-x86
+windows : windows-x64 windows-x86
 
-x86_64 : linux-x86_64 windows-x86_64
-i686 : linux-i686 windows-i686
+x64 : linux-x64 windows-x64
+x86 : linux-x86 windows-x86
 
-linux-x86_64 : gpio-x86_64.act
-linux-i686 : gpio-i686.act
+linux-x64 : gpio-x64.act
+linux-x86 : gpio-x86.act
 
-windows-x86_64 : gpio-x86_64.exe
-windows-i686 : gpio-i686.exe
+windows-x64 : gpio-x64.exe
+windows-x86 : gpio-x86.exe
 
-gpio-x86_64.act :
-	if ! test -f gpio-x86_64.act;\
+gpio-x64.act :
+	if ! test -f gpio-x64.act;\
 	then\
 		#$(COMPILER) $(COMPILER_FLAGS) -o supporters.obj -c supporters.cxx;\
-		$(COMPILER) $(COMPILER_FLAGS) -o gpio-x86_64.act.obj -c main.cxx;\
+		$(COMPILER) $(COMPILER_FLAGS) -o gpio-x64.act.obj -c main.cxx;\
 		\
-		$(COMPILER) $(COMPILER_FLAGS) -m64 -o gpio-x86_64.act gpio-x86_64.act.obj $(IN);\
+		$(COMPILER) $(COMPILER_FLAGS) -m64 -o gpio-x64.act gpio-x64.act.obj $(IN);\
 	fi
 
-gpio-i686.act :
-	if ! test -f gpio-i686.act;\
+gpio-x86.act :
+	if ! test -f gpio-x86.act;\
 	then\
 		#$(COMPILER) $(COMPILER_FLAGS) -o supporters.obj -c supporters.cxx;\
-		$(COMPILER) $(COMPILER_FLAGS) -o gpio-i686.act.obj -c main.cxx;\
+		$(COMPILER) $(COMPILER_FLAGS) -o gpio-x86.act.obj -c main.cxx;\
 		\
-		$(COMPILER) $(COMPILER_FLAGS) -m32 -L /usr/lib32 -o gpio-i686.act gpio-i686.act.obj $(IN);\
+		$(COMPILER) $(COMPILER_FLAGS) -m32 -L /usr/lib32 -o gpio-x86.act gpio-x86.act.obj $(IN);\
 	fi
 
-gpio-x86_64.exe :
-	if ! test -f gpio-x86_64.exe;\
+gpio-x64.exe :
+	if ! test -f gpio-x64.exe;\
 	then\
 		#$(COMPILER) $(COMPILER_FLAGS) -o supporters.obj -c supporters.cxx;\
-		$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/x86_64-w64-mingw32/5.3.0 -o gpio-x86_64.exe.obj -c main.cxx;\
+		$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/x86_64-w64-mingw32/5.3.0 -o gpio-x64.exe.obj -c main.cxx;\
 		\
-		$(WINCOMPILER_X64) $(COMPILER_FLAGS) -m64 -o gpio-x86_64.exe gpio-x86_64.exe.obj $(IN_WIN_X64) -lwsock32;\
+		$(WINCOMPILER_X64) $(COMPILER_FLAGS) -m64 -o gpio-x64.exe gpio-x64.exe.obj $(IN_WIN_X64) -lwsock32;\
 		# -l ws2_32\
-	#	$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/x86_64-w64-mingw32/5.3.0 -L /opt/boost/1.60/stage/lib -o gpio-x86_64.exe main.cxx $(IN_WIN_X64);\
+	#	$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/x86_64-w64-mingw32/5.3.0 -L /opt/boost/1.60/stage/lib -o gpio-x64.exe main.cxx $(IN_WIN_X64);\
 	fi
 
-gpio-i686.exe :
-	if ! test -f gpio-i686.exe;\
+gpio-x86.exe :
+	if ! test -f gpio-x86.exe;\
 	then\
 		#$(COMPILER) $(COMPILER_FLAGS) -o supporters.obj -c supporters.cxx;\
-		$(WINCOMPILER_X86) $(COMPILER_FLAGS) -I /usr/lib/gcc/i686-w64-mingw32/5.3.0 -o gpio-i686.exe.obj -c main.cxx;\
+		$(WINCOMPILER_X86) $(COMPILER_FLAGS) -I /usr/lib/gcc/x86-w64-mingw32/5.3.0 -o gpio-x86.exe.obj -c main.cxx;\
 		\
-		$(WINCOMPILER_X86) $(COMPILER_FLAGS) -m32 -o gpio-i686.exe gpio-i686.exe.obj $(IN_WIN_X86) -lwsock32;\
+		$(WINCOMPILER_X86) $(COMPILER_FLAGS) -m32 -o gpio-x86.exe gpio-x86.exe.obj $(IN_WIN_X86) -lwsock32;\
 		# -l ws2_32\
-	#	$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/i686-w64-mingw32/5.3.0 -o gpio-i686.exe main.cxx $(IN_WIN_X32);\
+	#	$(WINCOMPILER_X64) $(COMPILER_FLAGS) -I /usr/lib/gcc/x86-w64-mingw32/5.3.0 -o gpio-x86.exe main.cxx $(IN_WIN_X32);\
 	fi
 
 clean:
